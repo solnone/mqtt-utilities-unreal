@@ -63,7 +63,7 @@ JNI_METHOD void Java_com_ninevastudios_mqttdemo_MqttHelper_onConnected(JNIEnv* e
 		auto client = pHolder->GetClient(clientGuid);
 		if (client)
 		{
-			AsyncTask(ENamedThreads::GameThread, [=]() {
+			AsyncTask(ENamedThreads::GameThread, [=, this]() {
 				client->OnConnect();
 			});
 		}		
@@ -88,7 +88,7 @@ JNI_METHOD void Java_com_ninevastudios_mqttdemo_MqttHelper_onDisconnected(JNIEnv
 		auto client = pHolder->GetClient(clientGuid);
 		if (client)
 		{
-			AsyncTask(ENamedThreads::GameThread, [=]() {
+			AsyncTask(ENamedThreads::GameThread, [=, this]() {
 				client->OnDisconnect();
 			});
 		}		
@@ -114,7 +114,7 @@ JNI_METHOD void Java_com_ninevastudios_mqttdemo_MqttHelper_onSubscribed(JNIEnv* 
 		auto client = pHolder->GetClient(clientGuid);
 		if (client)
 		{
-			AsyncTask(ENamedThreads::GameThread, [=]() {
+			AsyncTask(ENamedThreads::GameThread, [=, this]() {
 				client->OnSubscribe(messageId, qosArray);
 			});
 		}		
@@ -139,7 +139,7 @@ JNI_METHOD void Java_com_ninevastudios_mqttdemo_MqttHelper_onUnsubscribed(JNIEnv
 		auto client = pHolder->GetClient(clientGuid);
 		if (client)
 		{
-			AsyncTask(ENamedThreads::GameThread, [=]() {
+			AsyncTask(ENamedThreads::GameThread, [=, this]() {
 				client->OnUnsubscribe(messageId);
 			});
 		}		
@@ -164,7 +164,7 @@ JNI_METHOD void Java_com_ninevastudios_mqttdemo_MqttHelper_onPublished(JNIEnv* e
 		auto client = pHolder->GetClient(clientGuid);
 		if (client)
 		{
-			AsyncTask(ENamedThreads::GameThread, [=]() {
+			AsyncTask(ENamedThreads::GameThread, [=, this]() {
 				client->OnPublish(messageId);
 			});
 		}		
@@ -190,7 +190,7 @@ JNI_METHOD void Java_com_ninevastudios_mqttdemo_MqttHelper_onMessageArrived(JNIE
 		auto client = pHolder->GetClient(clientGuid);
 		if (client)
 		{
-			AsyncTask(ENamedThreads::GameThread, [=]() {
+			AsyncTask(ENamedThreads::GameThread, [=, this]() {
 				client->OnMessage(message);
 			});
 		}		
@@ -217,7 +217,7 @@ JNI_METHOD void Java_com_ninevastudios_mqttdemo_MqttHelper_onError(JNIEnv* env, 
 		auto client = pHolder->GetClient(clientGuid);
 		if (client)
 		{
-			AsyncTask(ENamedThreads::GameThread, [=]() {
+			AsyncTask(ENamedThreads::GameThread, [=, this]() {
 				client->OnError(errCode, errorMessage);
 			});
 		}

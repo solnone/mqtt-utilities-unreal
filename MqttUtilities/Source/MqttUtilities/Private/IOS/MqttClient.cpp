@@ -27,7 +27,7 @@ void UMqttClient::Connect(FMqttConnectionData connectionData, const FOnConnectDe
 		if (error) {
 			int errCode = error.code;
 			FString errMsg = FString(error.localizedDescription);
-			AsyncTask(ENamedThreads::GameThread, [=]() {
+			AsyncTask(ENamedThreads::GameThread, [=, this]() {
 				OnErrorDelegate.ExecuteIfBound(errCode, errMsg);
 			});
 		}
@@ -47,7 +47,7 @@ void UMqttClient::Subscribe(FString topic, int qos)
 		if (error) {
 			int errCode = error.code;
 			FString errMsg = FString(error.localizedDescription);
-			AsyncTask(ENamedThreads::GameThread, [=]() {
+			AsyncTask(ENamedThreads::GameThread, [=, this]() {
 				OnErrorDelegate.ExecuteIfBound(errCode, errMsg);
 			});
 		}
@@ -60,7 +60,7 @@ void UMqttClient::Unsubscribe(FString topic)
 		if (error) {
 			int errCode = error.code;
 			FString errMsg = FString(error.localizedDescription);
-			AsyncTask(ENamedThreads::GameThread, [=]() {
+			AsyncTask(ENamedThreads::GameThread, [=, this]() {
 				OnErrorDelegate.ExecuteIfBound(errCode, errMsg);
 			});
 		}
@@ -75,7 +75,7 @@ void UMqttClient::Publish(FMqttMessage message)
 		if (error) {
 			int errCode = error.code;
 			FString errMsg = FString(error.localizedDescription);
-			AsyncTask(ENamedThreads::GameThread, [=]() {
+			AsyncTask(ENamedThreads::GameThread, [=, this]() {
 				OnErrorDelegate.ExecuteIfBound(errCode, errMsg);
 			});
 		}
@@ -95,37 +95,37 @@ void UMqttClient::Init(FMqttClientConfig configData)
 	MqttDelegate* mqttDelegate = [[MqttDelegate alloc] init];
 
 	mqttDelegate.onConnected = ^() {
-		AsyncTask(ENamedThreads::GameThread, [=]() {
+		AsyncTask(ENamedThreads::GameThread, [=, this]() {
 			OnConnectDelegate.ExecuteIfBound();
 		});
 	};
 
 	mqttDelegate.onDisconnected = ^() {
-		AsyncTask(ENamedThreads::GameThread, [=]() {
+		AsyncTask(ENamedThreads::GameThread, [=, this]() {
 			OnDisconnectDelegate.ExecuteIfBound();
 		});
 	};
 
 	mqttDelegate.onPublished = ^(int mid) {
-		AsyncTask(ENamedThreads::GameThread, [=]() {
+		AsyncTask(ENamedThreads::GameThread, [=, this]() {
 			OnPublishDelegate.ExecuteIfBound(mid);
 		});
 	};
 
 	mqttDelegate.onMessageReceived = ^(FMqttMessage message) {
-		AsyncTask(ENamedThreads::GameThread, [=]() {
+		AsyncTask(ENamedThreads::GameThread, [=, this]() {
 			OnMessageDelegate.ExecuteIfBound(message);
 		});
 	};
 
 	mqttDelegate.onSubscribed = ^(int mid, TArray<int> qos) {
-		AsyncTask(ENamedThreads::GameThread, [=]() {
+		AsyncTask(ENamedThreads::GameThread, [=, this]() {
 			OnSubscribeDelegate.ExecuteIfBound(mid, qos);
 		});
 	};
 
 	mqttDelegate.onUnsubscribed = ^(int mid) {
-		AsyncTask(ENamedThreads::GameThread, [=]() {
+		AsyncTask(ENamedThreads::GameThread, [=, this]() {
 			OnUnsubscribeDelegate.ExecuteIfBound(mid);
 		});
 	};
